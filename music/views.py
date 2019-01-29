@@ -136,6 +136,20 @@ def favorite_album(request, album_id):
         return JsonResponse({'success': True})
 
 
+def share_album(request, album_id):
+    album = get_object_or_404(Album, pk=album_id)
+    try:
+        if album.is_shared:
+            album.is_shared = False
+        else:
+            album.is_shared = True
+        album.save()
+    except (KeyError, Album.DoesNotExist):
+        return JsonResponse({'success': False})
+    else:
+        return redirect('music:index')
+
+
 def index(request):
     if not request.user.is_authenticated():
         return render(request, 'music/login.html')

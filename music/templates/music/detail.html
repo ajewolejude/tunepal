@@ -22,6 +22,7 @@
                     </a>
                     <h1>{{ album.album_title }} <small>{{ album.genre }}</small></h1>
                     <h2><i style="color: darkgrey">{{ album.artist }}</i></h2>
+                    <a href="{% url 'music:share_album' album.id %}" class="{% if album.is_shared %} btn btn-warning{% else %} btn btn-success{% endif %}">{% if album.is_shared %} Make Private{% else %} Share{% endif %}</a>
                 </div>
             </div>
         </div>
@@ -31,9 +32,16 @@
         <!-- Right Song Info -->
         <div class="col-sm-8 col-md-9">
 
+            {% if album.is_shared %}
+             <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" ><a>This album has been shared with the general publc. <input type="text" class="clearable-file-input" id="myInput"></a></li>
+                <li role="presentation" class="active"><a  onclick="myFunction()" >Copy Link</a></li>
+            </ul>
+            {% endif %}
             <ul class="nav nav-pills" style="margin-bottom: 10px;">
                 <li role="presentation" class="active"><a href="{% url 'music:detail' album.id %}">View All</a></li>
                 <li role="presentation"><a href="{% url 'music:create_song' album.id %}">Add New Song</a></li>
+
             </ul>
 
             <div class="panel panel-default">

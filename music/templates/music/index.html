@@ -37,7 +37,11 @@
                             <a href="{% url 'music:favorite_album' album.id %}" class="btn btn-default btn-sm btn-favorite" role="button">
                                 <span class="glyphicon glyphicon-star {% if album.is_favorite %}active{% endif %}"></span>
                             </a>
-
+                            {% if album.is_shared %}
+                            <a class="btn btn-default btn-sm btn-share" role="button">
+                                <span class=""> Shared Publicly</span>
+                            </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
