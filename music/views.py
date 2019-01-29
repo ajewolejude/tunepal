@@ -93,8 +93,15 @@ def delete_song(request, album_id, song_id):
 
 
 def detail(request, album_id):
+    album = get_object_or_404(Album, pk = album_id)
     if not request.user.is_authenticated():
-        return render(request, 'music/login.html')
+
+        if album.is_shared:
+            user = request.user
+            album = get_object_or_404(Album, pk=album_id)
+            return render(request, 'music/detailshared.html', {'album': album, 'user': user})
+        else:
+            return render(request, 'music/login.html')
     else:
         user = request.user
         album = get_object_or_404(Album, pk=album_id)

@@ -27,6 +27,7 @@ class Album(models.Model):
     genre = models.CharField(max_length=100)
     album_logo = models.FileField()
     is_favorite = models.BooleanField(default=False)
+    is_shared = models.BooleanField(default=False)
 
     def __str__(self):
         return self.album_title + ' - ' + self.artist
