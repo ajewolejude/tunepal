@@ -1,6 +1,3 @@
-![](http://i.imgur.com/YiFZyuW.png)
-
-
 # TUNE PAL
 
 Hi, I'm Ajewole Jude. For more info send email to adedamolaajewole@gmail.com
