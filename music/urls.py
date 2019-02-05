@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^register/$', views.register, name='register'),
     url(r'^login_user/$', views.login_user, name='login_user'),
     url(r'^profile/$', views.profile, name='profile'),
+    url(r'profile_page/(?P<username>[a-zA-Z0-9]+)$', views.profile_page, name='profile_page'),
     url(r'^logout_user/$', views.logout_user, name='logout_user'),
     url(r'^(?P<album_id>[0-9]+)/$', views.detail, name='detail'),
     url(r'^(?P<song_id>[0-9]+)/favorite/$', views.favorite, name='favorite'),

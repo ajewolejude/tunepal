@@ -11,14 +11,15 @@ from django.views.generic import View
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from music.models import Album, Song
+from music.models import Album, Song, User
+from django.views.decorators.csrf import csrf_exempt
 
 AUDIO_FILE_TYPES = ['wav', 'mp3', 'ogg']
 IMAGE_FILE_TYPES = ['png', 'jpg', 'jpeg']
 
 
 def create_album(request):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return render(request, 'music/login.html')
     else:
         form = AlbumForm(request.POST or None, request.FILES or None)
@@ -94,7 +95,7 @@ def delete_song(request, album_id, song_id):
 
 def detail(request, album_id):
     album = get_object_or_404(Album, pk = album_id)
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
 
         if album.is_shared:
             user = request.user
@@ -106,6 +107,11 @@ def detail(request, album_id):
         user = request.user
         album = get_object_or_404(Album, pk=album_id)
         return render(request, 'music/detail.html', {'album': album, 'user': user})
+
+
+def profile_page(request, username):
+    user = User.objects.get(username=username)
+    return render(request, 'music/profile_page.html', {"user":user})
 
 
 def favorite(request, song_id):
@@ -151,10 +157,10 @@ def share_album(request, album_id):
 
 
 def index(request):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return render(request, 'music/login.html')
     else:
-        albums = Album.objects.filter(user=request.user)
+        albums = Album.objects.filter(Q(user=request.user) | Q(is_shared=True))
         song_results = Song.objects.all()
         query = request.GET.get("q")
         if query:
@@ -182,7 +188,9 @@ def logout_user(request):
     return render(request, 'music/login.html', context)
 
 
+@csrf_exempt
 def login_user(request):
+
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
@@ -191,7 +199,7 @@ def login_user(request):
             if user.is_active:
                 login(request, user)
                 albums = Album.objects.filter(user=request.user)
-                return render(request, 'music/index.html', {'albums': albums})
+                return redirect('music:index')
             else:
                 return render(request, 'music/login.html', {'error_message': 'Your account has been disabled'})
         else:
@@ -220,7 +228,7 @@ def register(request):
 
 
 def songs(request, filter_by):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return render(request, 'music/login.html')
     else:
         try:
