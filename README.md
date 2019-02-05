@@ -5,6 +5,11 @@ Hi, I'm Ajewole Jude. For more info send email to adedamolaajewole@gmail.com
 Tunepal music streaming software that allows users to upload music albums and stream at anytime, any where and on any device on the cloud.
 It also allow you to create and edit a profile.
 It allows for later download of the music.
+It allows for easy sharing of albums with the public web.
+
+The link to this project is
+
+https://github.com/ajewolejude/tunepal/
                     
 				
 I got support from 
